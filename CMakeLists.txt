@@ -17,10 +17,16 @@ set(ASM_SOURCES src/startup/startup.s src/startup/isr_vec.s)
 include_directories(src)
 include_directories(config)
 
+aux_source_directory(packages/hal/Src HAL_SOURCES)
+
 # includes from external packages
 include_directories(packages/cmsis)
+include_directories(packages/hal/Inc)
+
+add_library(sthal STATIC ${HAL_SOURCES})
 
 add_executable(out.elf ${SOURCES} ${ASM_SOURCES})
+target_link_libraries(out.elf sthal)
 
 add_compile_options("-Wall" "-Wextra" "-fexceptions")
 
